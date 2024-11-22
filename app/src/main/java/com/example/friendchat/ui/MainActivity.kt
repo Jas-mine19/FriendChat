@@ -1,5 +1,6 @@
 package com.example.friendchat.ui
 
+import android.content.Intent
 import com.example.friendchat.ui.chat.ChatFragment
 import android.os.Bundle
 import android.view.Menu
@@ -7,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.friendchat.R
 import com.example.friendchat.databinding.ActivityMainBinding
+import com.example.friendchat.ui.profile.ProfileActivity
 import com.example.friendchat.ui.user.UserFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.toolbar.setOnMenuItemClickListener { item ->
-
+           startActivity(Intent(this,ProfileActivity::class.java))
             true
 
         }

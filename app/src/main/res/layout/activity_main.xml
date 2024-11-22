@@ -26,7 +26,6 @@
             app:menu="@menu/profile_menu" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Fragment Container -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
@@ -37,7 +36,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="FragmentTagUsage" />
 
-    <!-- Bottom Navigation View -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="0dp"

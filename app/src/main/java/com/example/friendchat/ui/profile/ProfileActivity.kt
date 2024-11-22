@@ -8,7 +8,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.friendchat.R
 
 class ProfileActivity : AppCompatActivity() {
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

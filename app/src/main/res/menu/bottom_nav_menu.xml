@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/nav_chat"
+        android:icon="@drawable/ic_chat"
+        android:iconTint="@color/black"
+        android:title="Chats"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/nav_users"
+        android:icon="@drawable/ic_profile"
+        android:iconTint="@color/black"
+        android:title="Users"
+        app:showAsAction="ifRoom" />
+</menu>

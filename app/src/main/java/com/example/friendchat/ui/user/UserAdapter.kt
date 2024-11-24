@@ -21,7 +21,9 @@ class UserAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val binding = ItemUserBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false
+            LayoutInflater.from(parent.context),
+            parent,
+            false
         )
         return UserViewHolder(binding)
     }
@@ -32,9 +34,8 @@ class UserAdapter(
 
     override fun getItemCount(): Int = users.size
 
-
     fun updateUsers(newUsers: List<User>) {
-        users = newUsers
+        this.users = newUsers
         notifyDataSetChanged()
     }
 }

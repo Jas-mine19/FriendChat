@@ -66,6 +66,7 @@ dependencies {
     implementation (libs.androidx.lifecycle.viewmodel.ktx)
     implementation (libs.hilt.android.v244)
     implementation(libs.firebase.appcheck.playintegrity)
+    testImplementation(libs.testng)
     kapt (libs.hilt.compiler.v244)
     implementation (libs.hilt.android)
     kapt (libs.hilt.compiler.v2511)
@@ -73,6 +74,9 @@ dependencies {
     implementation (libs.androidx.navigation.fragment.ktx)
     implementation (libs.androidx.navigation.ui.ktx)
 
+    implementation (libs.firebase.bom.v3211)
+    implementation (libs.firebase.appcheck)
+    implementation (libs.firebase.appcheck.playintegrity.v1701)
     // Room
     implementation (libs.androidx.room.runtime)
     kapt (libs.androidx.room.compiler)
@@ -81,6 +85,9 @@ dependencies {
     implementation (libs.retrofit)
     implementation (libs.converter.gson)
     implementation(libs.shimmer)
+    implementation(libs.firebase.appcheck.playintegrity.v1600)
+    implementation (libs.glide)
+    kapt (libs.compiler)
 
 
 

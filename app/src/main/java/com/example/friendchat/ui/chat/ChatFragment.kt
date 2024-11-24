@@ -6,12 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.friendchat.R
 import com.example.friendchat.databinding.FragmentChatBinding
-import com.example.friendchat.model.Chat
+import com.example.friendchat.model.ChatWithParticipants
 import com.example.friendchat.ui.message.MessageFragment
-import com.google.firebase.auth.FirebaseAuth
+import com.example.friendchat.ui.user.UserBottomSheetFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,43 +36,42 @@ class ChatFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
-        val currentUserUid = FirebaseAuth.getInstance().currentUser?.uid
-        if (currentUserUid != null) {
-            chatViewModel.loadChatsForUser(currentUserUid)
-        }
-
+        chatViewModel.loadChatsFromRoom()
         chatViewModel.chats.observe(viewLifecycleOwner) { chats ->
-            chatAdapter.updateChats(chats.distinctBy { it.participants }) // Ensure unique chats
+            chatAdapter.updateChats(chats)
         }
 
-
-        binding.fabCreateChat.setOnClickListener {
-
-        }
+//        binding.fabCreateChat.setOnClickListener {
+//            showUserBottomSheet()
+//        }
     }
 
     private fun setupRecyclerView() {
         chatAdapter = ChatAdapter(
             chats = emptyList(),
             getUserById = { userId -> chatViewModel.getUserById(userId) },
-            onChatClick = { chat -> openChat(chat) }
+            onChatClick = { chatWithParticipants -> openChat(chatWithParticipants) }
         )
-
         binding.recChats.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = chatAdapter
         }
     }
 
-    private fun openChat(chat: Chat) {
-        val bundle = Bundle().apply {
-            putString("chatId", chat.id)
-            putString("receiverId", chat.participants) // Adjust as per your model
+    private fun showUserBottomSheet() {
+        val userBottomSheet = UserBottomSheetFragment { selectedUser ->
+            chatViewModel.createOrGetChat(selectedUser) { chat ->
+                openChat(chat)
+            }
         }
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, MessageFragment::class.java, bundle)
-            .addToBackStack(null)
-            .commit()
+        userBottomSheet.show(childFragmentManager, UserBottomSheetFragment.TAG)
+    }
+
+    private fun openChat(chatWithParticipants: ChatWithParticipants) {
+        val bundle = Bundle().apply {
+            putString("chatId", chatWithParticipants.chat.id)
+        }
+        findNavController().navigate(R.id.action_chatFragment_to_messageFragment, bundle)
     }
 
     override fun onDestroyView() {

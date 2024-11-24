@@ -36,9 +36,7 @@ object AppModule {
         firestore: FirebaseFirestore
     ): ChatRepository {
         return ChatRepository(
-            chatDao = database.chatDao(),
-            messageDao = database.messageDao(),
-            firestore = firestore
+            chatDao = database.chatDao()
         )
     }
 

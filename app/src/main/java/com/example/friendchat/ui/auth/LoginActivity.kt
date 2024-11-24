@@ -25,6 +25,8 @@ class LoginActivity : AppCompatActivity() {
     @Inject
     lateinit var appPreferences: AppPreferences
 
+
+
     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,9 +54,21 @@ class LoginActivity : AppCompatActivity() {
 
         auth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(this) { task ->
             if (task.isSuccessful) {
+                val userId = auth.currentUser?.uid // Get the current user's ID
+                if (userId != null) {
+                    lifecycleScope.launch {
+                        appPreferences.saveUserId(userId)
+                        appPreferences.setIsAuthenticated(true) // Store authentication state
+                    }
+
+                    val intent = Intent(this, MainActivity::class.java).apply {
+                        putExtra("userId", userId)
+                    }
+                    startActivity(intent)
+                    finish()
+                }
             } else {
-                val error = task.exception
-                when (error) {
+                when (val error = task.exception) {
                     is FirebaseAuthException -> {
                         when (error.errorCode) {
                             "ERROR_NETWORK_REQUEST_FAILED" -> {

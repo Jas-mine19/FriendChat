@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.friendchat.databinding.ItemMessageReceiveBinding
 import com.example.friendchat.databinding.ItemMessageSentBinding
 import com.example.friendchat.model.Message
@@ -16,22 +17,6 @@ class MessageAdapter(
     companion object {
         private const val VIEW_TYPE_SENT = 1
         private const val VIEW_TYPE_RECEIVED = 2
-    }
-
-    inner class SentMessageViewHolder(private val binding: ItemMessageSentBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(message: Message) {
-            binding.tvMessage.text = message.content
-            binding.tvTimestamp.text = android.text.format.DateFormat.format("hh:mm a", message.timestamp)
-        }
-    }
-
-    inner class ReceivedMessageViewHolder(private val binding: ItemMessageReceiveBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(message: Message) {
-            binding.tvMessage.text = message.content
-            binding.tvTimestamp.text = android.text.format.DateFormat.format("hh:mm a", message.timestamp)
-        }
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -72,7 +57,59 @@ class MessageAdapter(
     override fun getItemCount(): Int = messages.size
 
     fun updateMessages(newMessages: List<Message>) {
-        this.messages = newMessages
+        messages = newMessages
         notifyDataSetChanged()
+    }
+
+    inner class SentMessageViewHolder(private val binding: ItemMessageSentBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(message: Message) {
+            when (message.type) {
+                "text" -> {
+                    binding.tvMessage.visibility = View.VISIBLE
+                    binding.ivMedia.visibility = View.GONE
+                    binding.tvMessage.text = message.content
+                }
+
+                "photo", "video" -> {
+                    binding.tvMessage.visibility = View.GONE
+                    binding.ivMedia.visibility = View.VISIBLE
+                    Glide.with(binding.root.context)
+                        .load(message.content)
+                        .into(binding.ivMedia)
+                }
+            }
+
+            binding.tvTimestamp.text = android.text.format.DateFormat.format(
+                "hh:mm a",
+                message.timestamp
+            )
+        }
+    }
+
+    inner class ReceivedMessageViewHolder(private val binding: ItemMessageReceiveBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(message: Message) {
+            when (message.type) {
+                "text" -> {
+                    binding.tvMessage.visibility = View.VISIBLE
+                    binding.ivMedia.visibility = View.GONE
+                    binding.tvMessage.text = message.content
+                }
+
+                "photo", "video" -> {
+                    binding.tvMessage.visibility = View.GONE
+                    binding.ivMedia.visibility = View.VISIBLE
+                    Glide.with(binding.root.context)
+                        .load(message.content)
+                        .into(binding.ivMedia)
+                }
+            }
+
+            binding.tvTimestamp.text = android.text.format.DateFormat.format(
+                "hh:mm a",
+                message.timestamp
+            )
+        }
     }
 }

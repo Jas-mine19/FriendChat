@@ -1,5 +1,7 @@
 package com.example.friendchat.ui.message
 
+
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,29 +13,25 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MessageViewModel @Inject constructor(private val messageRepository: MessageRepository) : ViewModel() {
-    private val _messages = MutableLiveData<List<Message>>()
-    val messages: LiveData<List<Message>> = _messages
+class MessageViewModel @Inject constructor(
+    private val messageRepository: MessageRepository
+) : ViewModel() {
 
-    fun loadMessages(chatId: String) {
+
+    private val _messages = MutableLiveData<List<Message>>()
+    val messages: LiveData<List<Message>> get() = _messages
+
+    fun loadMessagesForChat(chatId: String) {
         viewModelScope.launch {
-            val messages = messageRepository.getMessagesForChat(chatId)
-            _messages.value = messages
+            val messagesFromRoom = messageRepository.getMessagesForChat(chatId)
+            _messages.postValue(messagesFromRoom)
         }
-    }
-     fun getMessages(chatId: String): List<Message> {
-        return messageRepository.getMessagesForChat(chatId)
     }
 
     fun sendMessage(message: Message) {
         viewModelScope.launch {
             messageRepository.sendMessage(message)
-        }
-    }
-
-    fun syncMessages(chatId: String) {
-        viewModelScope.launch {
-            messageRepository.syncMessagesFromFirebase(chatId)
+            loadMessagesForChat(message.chatId)
         }
     }
 }

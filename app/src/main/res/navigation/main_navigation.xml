@@ -7,12 +7,31 @@
     <fragment
         android:id="@+id/chatFragment"
         android:name="com.example.friendchat.ui.chat.ChatFragment"
-        android:label="Chat"
-        tools:layout="@layout/fragment_chat" />
+        tools:layout="@layout/fragment_chat"
+        android:label="Chats">
+        <argument
+            android:name="userId"
+            app:argType="string"
+            android:defaultValue="" />
+        <action
+            android:id="@+id/action_chatFragment_to_messageFragment"
+            app:destination="@id/messageFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/userFragment"
         android:name="com.example.friendchat.ui.user.UserFragment"
-        android:label="Users"
-        tools:layout="@layout/fragment_user" />
+        tools:layout="@layout/fragment_user"
+        android:label="Users">
+        <argument
+            android:name="userId"
+            app:argType="string"
+            android:defaultValue="" />
+    </fragment>
+    <fragment
+        android:id="@+id/messageFragment"
+        android:name="com.example.friendchat.ui.message.MessageFragment"
+        android:label="MessageFragment"
+        tools:layout="@layout/fragment_message"
+        />
 </navigation>

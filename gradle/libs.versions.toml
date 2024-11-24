@@ -1,12 +1,18 @@
 [versions]
 agp = "8.7.2"
 androidxHiltCompiler = "1.0.0"
+compiler = "4.15.1"
 converterGson = "2.11.0"
 coreSplashscreen = "1.0.1"
 datastorePreferences = "1.1.1"
 datastorePreferencesCore = "1.1.1"
+firebaseAppcheck = "18.0.0"
+firebaseAppcheckPlayintegrityVersion = "17.0.1"
 firebaseBom = "33.6.0"
+firebaseBomVersion = "32.1.1"
 fragmentKtx = "1.8.5"
+glide = "4.16.0"
+googleFirebaseAppcheckPlayintegrity = "16.0.0"
 googleHiltAndroid = "2.48"
 googleHiltAndroidVersion = "2.44"
 googleHiltCompiler = "2.44"
@@ -46,6 +52,7 @@ firebaseDatabaseKtx = "21.0.0"
 shimmer = "0.5.0"
 swiperefreshlayout = "1.1.0"
 firebaseAppcheckPlayintegrity = "18.0.0"
+testng = "6.9.6"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -61,12 +68,18 @@ androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx",
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
+compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "compiler" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-appcheck = { module = "com.google.firebase:firebase-appcheck", version.ref = "firebaseAppcheck" }
+firebase-appcheck-playintegrity-v1600 = { module = "com.google.firebase:firebase-appcheck-playintegrity", version.ref = "googleFirebaseAppcheckPlayintegrity" }
+firebase-appcheck-playintegrity-v1701 = { module = "com.google.firebase:firebase-appcheck-playintegrity", version.ref = "firebaseAppcheckPlayintegrityVersion" }
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+firebase-bom-v3211 = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBomVersion" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroidVersion" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroidCompilerVersion" }
 hilt-android-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hiltAndroidGradlePlugin" }
@@ -89,6 +102,7 @@ firebase-database-ktx = { group = "com.google.firebase", name = "firebase-databa
 androidx-swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
 shimmer = { module = "com.facebook.shimmer:shimmer", version.ref = "shimmer" }
 firebase-appcheck-playintegrity = { group = "com.google.firebase", name = "firebase-appcheck-playintegrity", version.ref = "firebaseAppcheckPlayintegrity" }
+testng = { group = "org.testng", name = "testng", version.ref = "testng" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

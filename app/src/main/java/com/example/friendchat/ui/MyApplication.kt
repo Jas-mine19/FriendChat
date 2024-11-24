@@ -12,9 +12,9 @@ import dagger.hilt.android.HiltAndroidApp
 class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-        val firebaseAppCheck = FirebaseAppCheck.getInstance()
-        firebaseAppCheck.installAppCheckProviderFactory(
-            PlayIntegrityAppCheckProviderFactory.getInstance()
-        )
+        FirebaseApp.initializeApp(this)
+        FirebaseAppCheck.getInstance()
+            .installAppCheckProviderFactory(PlayIntegrityAppCheckProviderFactory.getInstance())
+
     }
 }

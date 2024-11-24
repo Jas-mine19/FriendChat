@@ -9,12 +9,13 @@ import com.example.friendchat.data.dao.MessageDao
 import com.example.friendchat.data.dao.UserDao
 import com.example.friendchat.model.Chat
 import com.example.friendchat.model.Message
+import com.example.friendchat.model.Participant
 import com.example.friendchat.model.User
 
 
 @Database(
-    entities = [User::class, Chat::class, Message::class],
-    version = 2,
+    entities = [User::class, Chat::class, Message::class, Participant::class],
+    version = 4,
     exportSchema = false
 )
 

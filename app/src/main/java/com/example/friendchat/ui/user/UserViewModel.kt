@@ -1,5 +1,6 @@
 package com.example.friendchat.ui.user
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,28 +21,24 @@ class UserViewModel @Inject constructor(
     val users: LiveData<List<User>> get() = _users
 
     init {
+        Log.d("UserViewModel", "Initializing UserViewModel")
+        loadUsersFromRoomList()
         syncUsersFromFirebase()
     }
 
-    fun syncUsersFromFirebase() {
+    fun loadUsersFromRoomList() {
         viewModelScope.launch {
-            val usersFromDatabase = userRepository.getAllUsers()
-            _users.postValue(usersFromDatabase)
-        }
-    }
-
-    private fun loadUsers() {
-        viewModelScope.launch {
-            val usersFromRoom = userRepository.getAllUsers()
+            val usersFromRoom = userRepository.getAllUsersList()
+            Log.d("UserViewModel", "Loaded users from Room in ViewModel: $usersFromRoom")
             _users.postValue(usersFromRoom)
         }
     }
-
-
-
-    private fun listenForUserUpdates() {
-        userRepository.listenForUserUpdates { updatedUsers ->
-            _users.postValue(updatedUsers)
+    fun syncUsersFromFirebase() {
+        viewModelScope.launch {
+            userRepository.syncUsersFromFirebase()
+            loadUsersFromRoomList()
         }
     }
+
+
 }

@@ -5,73 +5,68 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.friendchat.R
-import com.example.friendchat.databinding.FragmentUserBinding
-import com.example.friendchat.model.ChatWithParticipants
+import com.example.friendchat.databinding.BottomSheetUserBinding
 import com.example.friendchat.model.User
-import com.example.friendchat.ui.chat.ChatViewModel
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class UserFragment : Fragment() {
+class UserBottomSheetFragment(
+    private val onUserSelected: (User) -> Unit // Callback when a user is selected
+) : BottomSheetDialogFragment() {
 
-    private var _binding: FragmentUserBinding? = null
+    private var _binding: BottomSheetUserBinding? = null
     private val binding get() = _binding!!
 
     private val userViewModel: UserViewModel by viewModels()
-    private val chatViewModel: ChatViewModel by viewModels()
     private lateinit var userAdapter: UserAdapter
+
+    companion object {
+        const val TAG = "UserBottomSheetFragment"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentUserBinding.inflate(inflater, container, false)
+        _binding = BottomSheetUserBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        Log.d(TAG, "Bottom sheet onCreateView called")
         setupRecyclerView()
 
+        // Observe users from Room database
         userViewModel.users.observe(viewLifecycleOwner) { users ->
-            Log.d("UserFragment", "Observed users: $users")
-            userAdapter.updateUsers(users)
+            Log.d(TAG, "Users fetched for bottom sheet: $users")
+            if (users.isNotEmpty()) {
+                userAdapter.updateUsers(users)
+            } else {
+                Log.d(TAG, "No users available to display in the bottom sheet")
+            }
         }
 
-        userViewModel.loadUsersFromRoomList()
+        // Fetch users from Firebase and sync them with Room
         userViewModel.syncUsersFromFirebase()
     }
 
     private fun setupRecyclerView() {
         userAdapter = UserAdapter(
             users = emptyList(),
-            onUserClick = { user -> openOrCreateChat(user) } // Handle user click here
+            onUserClick = { user ->
+                onUserSelected(user) // Notify the parent when a user is selected
+                dismiss() // Close the bottom sheet
+            }
         )
 
-        binding.recUser.apply {
+        binding.recyclerViewUsers.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = userAdapter
         }
-    }
-
-    private fun openOrCreateChat(user: User) {
-        Log.d("UserFragment", "Clicked user: $user")
-        chatViewModel.createOrGetChat(user) { chatWithParticipants ->
-            navigateToMessageFragment(chatWithParticipants)
-        }
-    }
-
-    private fun navigateToMessageFragment(chatWithParticipants: ChatWithParticipants) {
-        val bundle = Bundle().apply {
-            putString("chatId", chatWithParticipants.chat.id) // Pass chat ID
-        }
-        findNavController().navigate(R.id.messageFragment, bundle)
     }
 
     override fun onDestroyView() {

@@ -2,6 +2,7 @@ package com.example.friendchat.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -52,13 +53,18 @@ class LoginActivity : AppCompatActivity() {
             return
         }
 
+        binding.progressBar.visibility = View.VISIBLE
+        binding.btnContinue.visibility = View.GONE
+
         auth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(this) { task ->
+            binding.progressBar.visibility = View.GONE
+            binding.btnContinue.visibility = View.VISIBLE
             if (task.isSuccessful) {
-                val userId = auth.currentUser?.uid // Get the current user's ID
+                val userId = auth.currentUser?.uid
                 if (userId != null) {
                     lifecycleScope.launch {
                         appPreferences.saveUserId(userId)
-                        appPreferences.setIsAuthenticated(true) // Store authentication state
+                        appPreferences.setIsAuthenticated(true)
                     }
 
                     val intent = Intent(this, MainActivity::class.java).apply {
@@ -68,6 +74,8 @@ class LoginActivity : AppCompatActivity() {
                     finish()
                 }
             } else {
+                binding.progressBar.visibility = View.GONE
+                binding.btnContinue.visibility = View.VISIBLE
                 when (val error = task.exception) {
                     is FirebaseAuthException -> {
                         when (error.errorCode) {

@@ -14,12 +14,12 @@ interface UserDao {
     @Query("SELECT * FROM users")
     suspend fun getAllUsersList(): List<User>
 
-    @Query("SELECT * FROM users")
-    fun getAllUsers(): LiveData<List<User>>
-
     @Query("SELECT * FROM users WHERE id = :userId")
     fun getUserById(userId: String): User?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUsers(users: List<User>)
+
+    @Query("DELETE FROM users")
+    fun deleteAllUsers()
 }

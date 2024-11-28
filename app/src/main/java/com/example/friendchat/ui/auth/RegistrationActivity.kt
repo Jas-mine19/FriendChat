@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -17,7 +18,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -48,7 +48,7 @@ class RegistrationActivity : AppCompatActivity() {
 
         auth = Firebase.auth
 
-        binding.btnContinue.setOnClickListener { signUpUser() }
+        binding.btnSignUp.setOnClickListener { signUpUser() }
         binding.userPhoto.setOnClickListener { pickImage.launch("image/*") }
         binding.tvLogin.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
@@ -56,7 +56,11 @@ class RegistrationActivity : AppCompatActivity() {
         }
     }
 
+
+
     private fun signUpUser() {
+        binding.progressBar.visibility = View.VISIBLE
+        binding.btnSignUp.visibility = View.GONE
         val name = binding.editTextUserName.text.toString().trim()
         val email = binding.editTextEmail.text.toString().trim()
         val pass = binding.editTextPassword.text.toString()
@@ -79,21 +83,28 @@ class RegistrationActivity : AppCompatActivity() {
 
         auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(this) { task ->
             if (task.isSuccessful) {
+                binding.progressBar.visibility = View.GONE
+                binding.btnSignUp.visibility = View.VISIBLE
                 auth.currentUser?.let {
-                    saveUserData(it.uid, name, email)
+                    saveUserData(it.uid, name, email, selectedImageUri.toString())
                 }
             } else {
                 Toast.makeText(this, "Registration failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                binding.progressBar.visibility = View.GONE
+                binding.btnSignUp.visibility = View.VISIBLE
             }
         }
     }
 
-    private fun saveUserData(userId: String, name: String, email: String) {
+    private fun saveUserData(userId: String, name: String, email: String,photo:String) {
         val db = Firebase.firestore
-        val user = hashMapOf("id" to userId, "name" to name, "email" to email)
+        val user = hashMapOf("id" to userId, "name" to name, "email" to email, "photo" to photo )
         db.collection("users").document(userId).set(user)
             .addOnSuccessListener {
-                lifecycleScope.launch { appPreferences.setIsAuthenticated(true) }
+                lifecycleScope.launch {
+                    appPreferences.setIsAuthenticated(true)
+                    appPreferences.saveUserId(userId)
+                }
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }
@@ -101,7 +112,6 @@ class RegistrationActivity : AppCompatActivity() {
                 Toast.makeText(this, "Failed to save user data: ${it.message}", Toast.LENGTH_SHORT).show()
             }
     }
-
     override fun onDestroy() {
         super.onDestroy()
         _binding = null

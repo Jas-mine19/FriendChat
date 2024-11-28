@@ -1,5 +1,6 @@
 package com.example.friendchat.ui.chat
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import com.example.friendchat.R
 import com.example.friendchat.databinding.FragmentChatBinding
 import com.example.friendchat.model.ChatWithParticipants
 import com.example.friendchat.ui.message.MessageFragment
+import com.example.friendchat.ui.profile.ProfileActivity
 import com.example.friendchat.ui.user.UserBottomSheetFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,6 +41,10 @@ class ChatFragment : Fragment() {
         chatViewModel.loadChatsFromRoom()
         chatViewModel.chats.observe(viewLifecycleOwner) { chats ->
             chatAdapter.updateChats(chats)
+        }
+        binding.toolbar.setOnMenuItemClickListener {
+            startActivity(Intent(requireContext(), ProfileActivity::class.java))
+            true
         }
 
 //        binding.fabCreateChat.setOnClickListener {

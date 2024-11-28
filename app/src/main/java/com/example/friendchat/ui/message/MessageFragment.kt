@@ -10,10 +10,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.friendchat.databinding.FragmentMessageBinding
 import com.example.friendchat.model.Message
 import com.example.friendchat.ui.chat.ChatViewModel
+import com.example.friendchat.ui.profile.ProfileActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,6 +53,15 @@ class MessageFragment : Fragment() {
         }
 
         messageViewModel.loadMessagesForChat(chatId)
+
+
+        binding.icBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
+        binding.toolbar.setOnMenuItemClickListener {
+            startActivity(Intent(requireContext(), ProfileActivity::class.java))
+            true
+        }
     }
 
     private fun setupRecyclerView() {

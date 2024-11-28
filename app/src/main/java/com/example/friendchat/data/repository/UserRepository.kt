@@ -23,9 +23,10 @@ class UserRepository @Inject constructor(
                 val snapshot = firestore.collection("users").get().await()
                 val usersFromFirebase = snapshot.toObjects(User::class.java)
                 Log.d("UserRepository", "Fetched users from Firebase: $usersFromFirebase")
+                userDao.deleteAllUsers()
                 userDao.insertUsers(usersFromFirebase)
 
-                val usersInRoom = userDao.getAllUsers().value
+                val usersInRoom = userDao.getAllUsersList()
                 Log.d("UserRepository", "Users in Room after sync: $usersInRoom")
             } catch (e: Exception) {
                 Log.e("UserRepository", "Error syncing users from Firebase", e)
@@ -42,13 +43,6 @@ class UserRepository @Inject constructor(
     }
 
 
-    suspend fun getAllUsers(): List<User> {
-        return withContext(Dispatchers.IO) {
-            val users = userDao.getAllUsers().value ?: emptyList()
-            Log.d("Users", "Fetched users from Room: $users")
-            users
-        }
-    }
 
 
     suspend fun getUserById(userId: String): User? {

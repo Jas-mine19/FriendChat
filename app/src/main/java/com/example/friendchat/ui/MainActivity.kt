@@ -37,12 +37,6 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbar)
-
-        binding.toolbar.setOnMenuItemClickListener {
-           startActivity(Intent(this@MainActivity,ProfileActivity::class.java))
-            true
-        }
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment

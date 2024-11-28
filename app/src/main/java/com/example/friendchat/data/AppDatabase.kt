@@ -15,7 +15,7 @@ import com.example.friendchat.model.User
 
 @Database(
     entities = [User::class, Chat::class, Message::class, Participant::class],
-    version = 4,
+    version = 5,
     exportSchema = false
 )
 

@@ -88,6 +88,8 @@ dependencies {
     implementation(libs.firebase.appcheck.playintegrity.v1600)
     implementation (libs.glide)
     kapt (libs.compiler)
+    implementation( libs.firebase.bom.v3200)
+    implementation (libs.firebase.messaging)
 
 
 

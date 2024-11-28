@@ -1,12 +1,18 @@
 package com.example.friendchat.ui.user
 
+import android.content.Context
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.friendchat.R
 import com.example.friendchat.databinding.ItemUserBinding
 import com.example.friendchat.model.User
 
 class UserAdapter(
+    private var context: Context,
     private var users: List<User>,
     private val onUserClick: (User) -> Unit
 ) : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
@@ -15,6 +21,11 @@ class UserAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(user: User) {
             binding.tvUserName.text = user.name
+            Glide.with(context)
+                .load("content://media/picker_get_content/0/com.android.providers.media.photopicker/media/1000023842")
+                .placeholder(R.drawable.ic_profile)
+                .error(R.drawable.ic_profile)
+                .into(binding.userPhoto)
             binding.root.setOnClickListener { onUserClick(user) }
         }
     }

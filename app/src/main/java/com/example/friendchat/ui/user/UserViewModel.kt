@@ -33,6 +33,7 @@ class UserViewModel @Inject constructor(
             _users.postValue(usersFromRoom)
         }
     }
+
     fun syncUsersFromFirebase() {
         viewModelScope.launch {
             userRepository.syncUsersFromFirebase()

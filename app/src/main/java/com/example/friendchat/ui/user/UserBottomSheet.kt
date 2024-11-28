@@ -40,7 +40,6 @@ class UserBottomSheetFragment(
         Log.d(TAG, "Bottom sheet onCreateView called")
         setupRecyclerView()
 
-        // Observe users from Room database
         userViewModel.users.observe(viewLifecycleOwner) { users ->
             Log.d(TAG, "Users fetched for bottom sheet: $users")
             if (users.isNotEmpty()) {
@@ -50,16 +49,16 @@ class UserBottomSheetFragment(
             }
         }
 
-        // Fetch users from Firebase and sync them with Room
         userViewModel.syncUsersFromFirebase()
     }
 
     private fun setupRecyclerView() {
         userAdapter = UserAdapter(
+            context = requireContext(),
             users = emptyList(),
             onUserClick = { user ->
-                onUserSelected(user) // Notify the parent when a user is selected
-                dismiss() // Close the bottom sheet
+                onUserSelected(user)
+                dismiss()
             }
         )
 

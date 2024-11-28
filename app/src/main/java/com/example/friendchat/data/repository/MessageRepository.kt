@@ -1,6 +1,5 @@
 package com.example.friendchat.data.repository
 
-import androidx.lifecycle.LiveData
 import com.example.friendchat.data.dao.MessageDao
 import com.example.friendchat.model.Message
 import com.google.firebase.firestore.FirebaseFirestore

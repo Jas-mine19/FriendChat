@@ -13,6 +13,7 @@ firebaseBomVersion = "32.1.1"
 fragmentKtx = "1.8.5"
 glide = "4.16.0"
 googleFirebaseAppcheckPlayintegrity = "16.0.0"
+googleFirebaseBom = "32.0.0"
 googleHiltAndroid = "2.48"
 googleHiltAndroidVersion = "2.44"
 googleHiltCompiler = "2.44"
@@ -78,7 +79,9 @@ firebase-appcheck-playintegrity-v1701 = { module = "com.google.firebase:firebase
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+firebase-bom-v3200 = { module = "com.google.firebase:firebase-bom", version.ref = "googleFirebaseBom" }
 firebase-bom-v3211 = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBomVersion" }
+firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroidVersion" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroidCompilerVersion" }

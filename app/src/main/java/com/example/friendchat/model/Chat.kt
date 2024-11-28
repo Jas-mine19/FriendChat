@@ -10,16 +10,16 @@ import androidx.room.Relation
 data class Chat(
     @PrimaryKey val id: String = "",
     val lastMessageId: String? = null,
-    val lastMessageContent: String? = null,
+    var lastMessageContent: String? = null,
     val lastMessageSenderId: String? = null,
-    val lastMessageTimestamp: Long? = null,
+    var lastMessageTimestamp: Long? = null,
     val timestamp: Long = 0L
 )
 
 
 @Entity(tableName = "participants")
 data class Participant(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0, // Auto-generated ID
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val chatId: String,
     val userId: String
 )

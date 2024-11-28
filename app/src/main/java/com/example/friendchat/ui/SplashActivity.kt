@@ -6,6 +6,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.friendchat.ui.auth.LoginActivity
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -18,7 +19,7 @@ class SplashActivity : AppCompatActivity() {
 
         lifecycleScope.launchWhenStarted {
             viewModel.isAuthenticated.collect { isAuthenticated ->
-                val nextIntent = if (isAuthenticated) {
+                val nextIntent = if (FirebaseAuth.getInstance().currentUser != null && isAuthenticated) {
                     Intent(this@SplashActivity, MainActivity::class.java)
                 } else {
                     Intent(this@SplashActivity, LoginActivity::class.java)

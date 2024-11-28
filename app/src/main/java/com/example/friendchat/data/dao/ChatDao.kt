@@ -9,6 +9,7 @@ import androidx.room.Transaction
 import com.example.friendchat.model.Chat
 import com.example.friendchat.model.ChatWithParticipants
 import com.example.friendchat.model.Participant
+import retrofit2.http.DELETE
 
 @Dao
 interface ChatDao {
@@ -16,8 +17,8 @@ interface ChatDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertChat(chat: Chat)
 
-    @Query("SELECT * FROM chats")
-    suspend fun getAllChats(): List<Chat>
+    @Query("DELETE FROM chats")
+    fun deleteAllChats()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertParticipants(participants: List<Participant>)
@@ -46,4 +47,5 @@ interface ChatDao {
         WHERE participants.userId = :userId
     """)
     suspend fun getChatByParticipant(userId: String): Chat?
+
 }

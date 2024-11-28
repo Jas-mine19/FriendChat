@@ -1,5 +1,6 @@
 package com.example.friendchat.ui.user
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import com.example.friendchat.databinding.FragmentUserBinding
 import com.example.friendchat.model.ChatWithParticipants
 import com.example.friendchat.model.User
 import com.example.friendchat.ui.chat.ChatViewModel
+import com.example.friendchat.ui.profile.ProfileActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,11 +38,17 @@ class UserFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding.toolbar.setOnMenuItemClickListener {
+            startActivity(Intent(requireContext(), ProfileActivity::class.java))
+            true
+        }
         setupRecyclerView()
 
         userViewModel.users.observe(viewLifecycleOwner) { users ->
-            Log.d("UserFragment", "Observed users: $users")
+
+            users.forEach { item->
+                Log.d("UserFragment", "Observed users: $item")
+            }
             userAdapter.updateUsers(users)
         }
 
@@ -50,8 +58,9 @@ class UserFragment : Fragment() {
 
     private fun setupRecyclerView() {
         userAdapter = UserAdapter(
+            context= requireContext(),
             users = emptyList(),
-            onUserClick = { user -> openOrCreateChat(user) } // Handle user click here
+            onUserClick = { user -> openOrCreateChat(user) }
         )
 
         binding.recUser.apply {
@@ -69,7 +78,7 @@ class UserFragment : Fragment() {
 
     private fun navigateToMessageFragment(chatWithParticipants: ChatWithParticipants) {
         val bundle = Bundle().apply {
-            putString("chatId", chatWithParticipants.chat.id) // Pass chat ID
+            putString("chatId", chatWithParticipants.chat.id)
         }
         findNavController().navigate(R.id.messageFragment, bundle)
     }
